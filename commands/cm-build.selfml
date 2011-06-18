@@ -1,0 +1,15 @@
+(trigger
+    (key [[ctrl][shift]R]))
+
+(name [Build CM])
+
+(only-in source.ml)
+
+(input nothing)
+
+(output html)
+
+(save nothing)
+
+(script [require_cmd "${TM_SML:=sml}"
+echo "CM.make \"sources.cm\";"|"$TM_SML"|pre])

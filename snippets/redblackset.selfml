@@ -1,0 +1,12 @@
+(name RedBlackSet)
+
+(trigger
+    (tab rbs))
+
+(only-in source.ml)
+
+(snippet [structure %{1="Set"} = RedBlackSetFn (struct
+                                           type ord_key = %{2}
+									 val compare = %{3}
+                                    end)
+])

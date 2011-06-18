@@ -1,0 +1,11 @@
+(name RedBlackMap)
+
+(trigger
+    (tab rbm))
+
+(only-in source.ml)
+
+(snippet [structure %{1="Map"} = RedBlackMapFn(struct
+                                          type ord_key = %{2}
+                                          val compare = %{3}
+                                    end)])

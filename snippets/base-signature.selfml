@@ -1,0 +1,11 @@
+(name [Base Signature])
+
+(trigger
+    (tab sig))
+
+(only-in [source.ml, source.sig])
+
+(snippet [signature %{1} =
+sig
+	%{2}
+end])

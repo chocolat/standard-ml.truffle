@@ -1,0 +1,20 @@
+(trigger
+    (key [[cmd]B]))
+
+(name [Build SML])
+
+(only-in source.ml)
+
+(input nothing)
+
+(output html)
+
+(save nothing)
+
+(script [if [[ -d "$TM_SMLNJ_HOME/base/system" ]]; then
+  cd "$TM_SMLNJ_HOME/base/system"
+  make
+else
+  echo "No such folder: $TM_SMLNJ_HOME/base/system"
+fi
+])

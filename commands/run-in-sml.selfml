@@ -1,0 +1,15 @@
+(trigger
+    (key [[cmd]R]))
+
+(name [Run in SML])
+
+(only-in source.ml)
+
+(input selection)
+
+(output html)
+
+(save nothing)
+
+(script [require_cmd "${TM_SML:=sml}"
+"$TM_SML"|pre])

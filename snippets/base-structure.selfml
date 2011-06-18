@@ -1,0 +1,11 @@
+(name [Base Structure])
+
+(trigger
+    (tab struct))
+
+(only-in source.ml)
+
+(snippet [structure %{1} =
+struct
+	%{2}
+end])

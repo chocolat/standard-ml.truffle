@@ -1,0 +1,25 @@
+(detector
+    (extension cm))
+
+(folding
+    (start [\(\*])
+    (stop [\*\)]))
+
+(in source.ml
+    (indentation.decrease [^(?!(struct|sig))\s*(end|in)\b])
+    (indentation.increase [(?x) .*\bsig\b(?!.*\bend\b)
+							| .*\bstruct\b(?!.*\bend\b) 
+							| .*\blet\b(?!.*\bin\b.*\bend\b)
+							| \blocal\b(?!.*\bin\b.*\bend\b)
+							| \bin\b(?!.*\bend\b)
+							| .*\(case\b(?!\))
+							| .*\bcase\b(?!(.*of.*=>.*))])
+    (indentation.increase-next-line-only [(?x) ^ .* : \s*(\(\* .* \*\))? \s* $
+							| ^.*fun.*(?=\n\s*\|)
+							| ^.*(?=\n\s*\|)]))
+
+(in source.ml
+    (shell-variables
+        (TM_COMMENT_START [(*])
+        (TM_COMMENT_END [*)]))
+    (comment.block [(*] [*)]))

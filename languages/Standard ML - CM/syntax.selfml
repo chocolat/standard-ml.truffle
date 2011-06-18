@@ -1,0 +1,28 @@
+(root source.cm
+    (zone comment.block.cm
+        (start
+            (regex [\(\*]
+                (0 punctuation.definition.comment.cm)))
+        (end
+            (regex [\*\)]
+                (0 punctuation.definition.comment.cm))))
+    (zone keyword.other.cm
+        (match
+            (list Library is Group structure signature functor)
+            (boundary.both)))
+    (zone meta.directive.cm
+        (start
+            (regex [^\s*(#(if).*)]
+                (1 meta.preprocessor.cm)
+                (2 keyword.control.import.if.cm)))
+        (end
+            (regex [^\s*(#(endif))]
+                (1 meta.preprocessor.cm)
+                (2 keyword.control.import.if.cm))))
+    (zone string.quoted.double.cm
+        (start ")
+        (end ")
+        (subzones
+            (zone constant.character.escape.cm
+                (match
+                    (regex \\.))))))

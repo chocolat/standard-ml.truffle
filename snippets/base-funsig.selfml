@@ -1,0 +1,11 @@
+(name [Base Funsig])
+
+(trigger
+    (tab fs))
+
+(only-in source.ml)
+
+(snippet [funsig %{1} (%{2}) =
+sig
+	%{3}
+end])

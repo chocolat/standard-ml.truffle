@@ -1,0 +1,165 @@
+(root source.ml
+    (include @comments)
+    (zone keyword.other.ml
+        (match
+            (list val datatype struct as let in abstype local where case of fn raise exception handle ref infix infixr before end structure withtype)
+            (boundary.both)))
+    (zone meta.exp.let.ml
+        (start
+            (regex [\b(let)\b]
+                (1 keyword.other.ml)
+                (2 keyword.other.ml)))
+        (end
+            (regex [\b(end)\b]
+                (1 keyword.other.ml)
+                (2 keyword.other.ml)))
+        (subzones
+            (include $self)))
+    (zone meta.module.sigdec.ml
+        (start
+            (regex [\b(sig)\b]
+                (1 keyword.other.delimiter.ml)
+                (2 keyword.other.delimiter.ml)))
+        (end
+            (regex [\b(end)\b]
+                (1 keyword.other.delimiter.ml)
+                (2 keyword.other.delimiter.ml)))
+        (subzones
+            (include @spec)))
+    (zone keyword.control.ml
+        (match
+            (list if then else)
+            (boundary.both)))
+    (zone meta.definition.fun.ml
+        (start
+            (regex [\b(fun|and)\s+([\w]+)\b]
+                (1 keyword.control.fun.ml)
+                (2 entity.name.function.ml)))
+        (end
+            (regex [(?=val|type|eqtype|datatype|structure|local)]
+                (1 keyword.control.fun.ml)
+                (2 entity.name.function.ml)))
+        (subzones
+            (include source.ml)))
+    (zone string.quoted.double.ml
+        (start
+            (regex "
+                (0 punctuation.definition.string.begin.ml)))
+        (end
+            (regex "
+                (0 punctuation.definition.string.end.ml)))
+        (subzones
+            (zone constant.character.escape.ml
+                (match
+                    (regex \\.)))))
+    (zone constant.character.ml
+        (match
+            (regex [(#")(\\)?.(")]
+                (3 punctuation.definition.constant.ml)
+                (1 punctuation.definition.constant.ml))))
+    (zone constant.numeric.ml
+        (match
+            (regex \b\d*\.?\d+\b)))
+    (zone keyword.operator.logical.ml
+        (match
+            (list andalso orelse not)
+            (boundary.both)))
+    (zone meta.module.dec.ml
+        (start
+            (regex [(?x)\b
+					(functor|structure|signature|funsig)\s+
+					(\w+)\s* # identifier]
+                (1 storage.type.module.binder.ml)
+                (2 entity.name.type.module.ml)))
+        (end
+            (regex [(?==|:|\()]
+                (1 storage.type.module.binder.ml)
+                (2 entity.name.type.module.ml))))
+    (zone keyword.other.module.ml
+        (match
+            (list open)
+            (boundary.both)))
+    (zone constant.language.ml
+        (match
+            (list nil true false NONE SOME)
+            (boundary.both)))
+    (zone meta.typeabbrev.ml
+        (start
+            (regex [\s*(type|eqtype) .* =]
+                (1 keyword.other.typeabbrev.ml)
+                (2 variable.other.typename.ml)))
+        (end
+            (regex $
+                (1 keyword.other.typeabbrev.ml)
+                (2 variable.other.typename.ml)))
+        (subzones
+            (zone meta.typeexp.ml
+                (match
+                    (regex [(([a-zA-Z0-9\.\* ]|(\->))*)]))))))
+
+(collection comments
+    (zone comment.block.ml
+        (start
+            (regex [\(\*]
+                (0 punctuation.definition.comment.ml)))
+        (end
+            (regex [\*\)]
+                (0 punctuation.definition.comment.ml)))
+        (subzones
+            (include @comments))))
+
+(collection spec
+    (zone meta.spec.ml.type
+        (match
+            (regex [\b(exception|type)\s+([a-zA-Z][a-zA-Z0-9'_]*)]
+                (1 keyword.other.ml)
+                (2 entity.name.type.abbrev.ml))))
+    (zone meta.spec.ml.datatype
+        (start
+            (regex [\b(datatype)\s+([a-zA-Z][a-zA-Z0-9'_]*)\s*(?==)]
+                (1 keyword.other.ml)
+                (2 entity.name.type.datatype.ml)))
+        (end
+            (regex [(?=val|type|eqtype|datatype|structure|include|exception)]
+                (1 keyword.other.ml)
+                (2 entity.name.type.datatype.ml)))
+        (subzones
+            (zone meta.spec.ml.datatype
+                (match
+                    (regex [\b(and)\s+([a-zA-Z][a-zA-Z0-9'_]*)\s*(?==)]
+                        (1 keyword.other.ml)
+                        (2 entity.name.type.datatype.ml))))
+            (zone meta.datatype.rule.main.ml
+                (match
+                    (regex [(?x)
+							=\s*([a-zA-Z][a-zA-Z0-9'_]*)(\s+of)?]
+                        (1 variable.other.dcon.ml)
+                        (2 keyword.other.ml))))
+            (zone meta.datatype.rule.other.ml
+                (match
+                    (regex [\|\s*([a-zA-Z][a-zA-Z0-9'_]*)(\s+of)?]
+                        (1 variable.other.dcon.ml)
+                        (2 keyword.other.ml))))))
+    (zone meta.spec.ml.val
+        (match
+            (regex [\b(val)\s*([^:]+)\s*:]
+                (1 keyword.other.ml))))
+    (zone meta.spec.ml.structure
+        (start
+            (regex [\b(structure)\s*(\w+)\s*:]
+                (1 keyword.other.ml)
+                (2 entity.name.type.module.ml)))
+        (end
+            (regex [(?=val|type|eqtype|datatype|structure|include)]
+                (1 keyword.other.ml)
+                (2 entity.name.type.module.ml)))
+        (subzones
+            (zone keyword.other.ml
+                (match
+                    (list sharing)
+                    (boundary.both)))))
+    (zone meta.spec.ml.include
+        (match
+            (regex [\b(include)\b]
+                (1 keyword.other.ml))))
+    (include @comments))

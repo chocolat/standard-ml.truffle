@@ -1,0 +1,8 @@
+(name itos)
+
+(trigger
+    (tab itos))
+
+(only-in source.ml)
+
+(snippet [Int.toString %{1}])
