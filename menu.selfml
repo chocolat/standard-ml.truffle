@@ -3,6 +3,6 @@
     command.build-sml
     command.cm-build
     ---
-    (submenu Modules snippet.base-functor snippet.base-signature snippet.base-structure snippet.base-funsig command.close-struct-fct-sig)
+    (submenu Modules snippet.base-functor snippet.base-signature snippet.base-structure snippet.base-funsig)
     (submenu [SML/NJ Library] snippet.redblackset snippet.redblackmap)
     (submenu Basis snippet.itos))
